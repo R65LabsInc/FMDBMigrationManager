@@ -11,15 +11,15 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.8'
   s.default_subspec = 'System'
   
-  # Use the standalone build of SQLite
-  s.subspec 'Standalone' do |ss|
+  # Use FMDB/SQLCipher
+  s.subspec 'SQLCipher' do |ss|
     ss.source_files = 'Code'
-    ss.dependency 'FMDB/standalone', '>= 2.3'
+    ss.dependency 'FMDB/SQLCipher', '2.6.2'
   end
   
-  # Use the system build of sqlite
+  # Use FMDB/SQLCipher
   s.subspec 'System' do |ss|
     ss.source_files = 'Code'
-    ss.dependency 'FMDB/standard', '>= 2.3'
+    ss.dependency 'FMDB/SQLCipher', '2.6.2'
   end    
 end
