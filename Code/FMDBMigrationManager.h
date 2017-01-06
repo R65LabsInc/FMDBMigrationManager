@@ -42,12 +42,35 @@
 + (instancetype)managerWithDatabase:(FMDatabase *)database migrationsBundle:(NSBundle *)bundle;
 
 /**
+ @abstract Creates a new migration manager with a given database and migrations bundle.
+ @param database The database with which to initialize the migration manager.
+ @param bundle The bundle containing the migrations.
+ @param encryptionKeyString The (optional) encryption key to use with the database.
+ @return A new migration manager.
+ */
++ (instancetype)managerWithDatabase:(FMDatabase *)database migrationsBundle:(NSBundle *)bundle encryptionKeyString:(NSString *)encryptionKeyString;
+
+/**
  @abstract Creates a new migration manager with a database for the given database and migrations bundle.
  @param path The path to a database with which to initialize the migration manager.
  @param bundle The bundle containing the migrations.
  @return A new migration manager.
  */
 + (instancetype)managerWithDatabaseAtPath:(NSString *)path migrationsBundle:(NSBundle *)bundle;
+
+/**
+ @abstract Creates a new migration manager with a database for the given database and migrations bundle.
+ @param path The path to a database with which to initialize the migration manager.
+ @param bundle The bundle containing the migrations.
+ @param encryptionKeyString The (optional) encryption key to use with the database.
+ @return A new migration manager.
+ */
++ (instancetype)managerWithDatabaseAtPath:(NSString *)path migrationsBundle:(NSBundle *)bundle encryptionKeyString:(NSString *)encryptionKeyString;
+
+/**
+ Make init method (without params) unavailable
+ */
+- (instancetype) init UNAVAILABLE_ATTRIBUTE;
 
 /**
  @abstract Determines whether the receiver will perform a search for dynamically defined migrations. Default: `YES`.

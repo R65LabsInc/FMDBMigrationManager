@@ -64,6 +64,8 @@ static NSArray *FMDBClassesConformingToProtocol(Protocol *protocol)
 @property (nonatomic, assign) BOOL shouldCloseOnDealloc;
 @property (nonatomic) NSArray *migrations;
 @property (nonatomic) NSMutableArray *externalMigrations;
+@property (nonatomic) NSString *encryptionKeyString;
+
 @end
 
 @implementation FMDBMigrationManager
@@ -74,13 +76,29 @@ static NSArray *FMDBClassesConformingToProtocol(Protocol *protocol)
     return [[self alloc] initWithDatabase:database migrationsBundle:bundle];
 }
 
++ (instancetype)managerWithDatabaseAtPath:(NSString *)path migrationsBundle:(NSBundle *)bundle encryptionKeyString:(NSString *)encryptionKeyString
+{
+    FMDatabase *database = [FMDatabase databaseWithPath:path];
+    return [[self alloc] initWithDatabase:database migrationsBundle:bundle encryptionKeyString:encryptionKeyString];
+}
+
 + (instancetype)managerWithDatabase:(FMDatabase *)database migrationsBundle:(NSBundle *)bundle
 {
     return [[self alloc] initWithDatabase:database migrationsBundle:bundle];
 }
 
-// Designated initializer
++ (instancetype)managerWithDatabase:(FMDatabase *)database migrationsBundle:(NSBundle *)bundle encryptionKeyString:(NSString *)encryptionKeyString
+{
+    return [[self alloc] initWithDatabase:database migrationsBundle:bundle encryptionKeyString:encryptionKeyString];
+}
+
 - (id)initWithDatabase:(FMDatabase *)database migrationsBundle:(NSBundle *)migrationsBundle
+{
+    return [self initWithDatabase:database migrationsBundle:migrationsBundle encryptionKeyString:nil];
+}
+
+// Designated initializer
+- (id)initWithDatabase:(FMDatabase *)database migrationsBundle:(NSBundle *)migrationsBundle encryptionKeyString:(NSString *)encryptionKeyString
 {
     if (!database) [NSException raise:NSInvalidArgumentException format:@"Cannot initialize a `%@` with nil `database`.", [self class]];
     if (!migrationsBundle) [NSException raise:NSInvalidArgumentException format:@"Cannot initialize a `%@` with nil `migrationsBundle`.", [self class]];
@@ -88,11 +106,15 @@ static NSArray *FMDBClassesConformingToProtocol(Protocol *protocol)
     if (self) {
         _database = database;
         _migrationsBundle = migrationsBundle;
+        _encryptionKeyString = encryptionKeyString;
         _dynamicMigrationsEnabled = YES;
         _externalMigrations = [NSMutableArray new];
         if (![database goodConnection]) {
             self.shouldCloseOnDealloc = YES;
             [database open];
+            if(_encryptionKeyString) {
+                [database setKey:_encryptionKeyString];
+            }
         }
     }
     return self;
