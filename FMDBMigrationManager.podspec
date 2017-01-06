@@ -14,12 +14,12 @@ Pod::Spec.new do |s|
   # Use FMDB/SQLCipher
   s.subspec 'SQLCipher' do |ss|
     ss.source_files = 'Code'
-    ss.dependency 'FMDB/SQLCipher', :git => 'https://github.com/R65LabsInc/fmdb.git'
+    ss.dependency 'FMDB/SQLCipher'
   end
   
   # Use FMDB/SQLCipher
   s.subspec 'System' do |ss|
     ss.source_files = 'Code'
-    ss.dependency 'FMDB/SQLCipher', :git => 'https://github.com/R65LabsInc/fmdb.git'
+    ss.dependency 'FMDB/SQLCipher'
   end    
 end
