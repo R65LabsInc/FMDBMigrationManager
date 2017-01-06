@@ -3,7 +3,7 @@ workspace 'FMDBMigrationManager'
 
 def import_pods
   pod 'Expecta', '~> 0.3.0'
-  pod 'FMDB/SQLCipher'
+  pod 'FMDB/SQLCipher', :git => 'https://github.com/R65LabsInc/fmdb.git'
   pod 'FMDBMigrationManager', :path => '.'
 end
 
